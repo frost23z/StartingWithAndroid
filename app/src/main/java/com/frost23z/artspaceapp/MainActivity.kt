@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -75,11 +77,25 @@ fun ArtSpaceApp(
     onNext: () -> Unit = {}
 ) {
     val configuration = LocalConfiguration.current
+    val swipeModifier = Modifier.pointerInput(Unit) {
+        detectHorizontalDragGestures { _, dragAmount ->
+            val threshold = 50f
+            when {
+                dragAmount > threshold && hasPrev -> {
+                    onPrev()
+                }
+                dragAmount < -threshold && hasNext -> {
+                    onNext()
+                }
+            }
+        }
+    }
     if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
         Row(
             modifier = modifier
                 .fillMaxSize()
-                .padding(0.dp),
+                .padding(0.dp)
+                .then(swipeModifier),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -103,7 +119,9 @@ fun ArtSpaceApp(
 
     } else {
         Column(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier
+                .fillMaxSize()
+                .then(swipeModifier),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
