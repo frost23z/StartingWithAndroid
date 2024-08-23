@@ -6,6 +6,7 @@ This repo contains some practice projects that I have done while learning Androi
 
 1. [BusinessCard](https://github.com/frost23z/StartingWithAndroid/tree/BusinessCard)
 2. [ArtSpaceApp](https://github.com/frost23z/StartingWithAndroid/tree/ArtSpaceApp)
+3. [30DaysApp](https://github.com/frost23z/StartingWithAndroid/tree/30DaysApp)
 
 
 ## Getting Started
